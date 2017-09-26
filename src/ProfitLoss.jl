@@ -1,4 +1,4 @@
-module Profitloss
+module ProfitLoss
 
 import ..Clarus
 
