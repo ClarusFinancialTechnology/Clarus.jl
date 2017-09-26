@@ -1,6 +1,6 @@
 The Clarus.jl package is licensed under the MIT "Expat" License:
 
-> Copyright (c) 2017: Liam T. Henry.
+> Copyright (c) 2017: Clarus Financial Technology.
 > 
 > 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
