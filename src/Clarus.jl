@@ -74,8 +74,21 @@ function api_request(category, functionName; params...)
 end
 
 #SUB-MODULES
-include("Margin.jl")
 include("Simm.jl")
+include("Margin.jl")
+include("Credit.jl")
+include("Xva.jl")
+include("Frtb.jl")
+include("Risk.jl")
+include("Hedge.jl")
+include("Profitloss.jl")
+include("Portfolio.jl")
+include("Market.jl")
+include("Load.jl")
+include("Compliance.jl")
+include("Sdr.jl")
+include("Dates.jl")
+include("Util.jl")
 include("Trade.jl")
 #
 
