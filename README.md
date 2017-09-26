@@ -1,5 +1,30 @@
 # Clarus
 ## Clarus Microservices
+### Example Usage
+```julia
+julia> import Clarus
+julia> response = Clarus.Trade.price(trade="USD 10Y 100m pay 2.1%")
+julia> print(Requests.readstring(response))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 [![Build Status](https://travis-ci.org/liamhenry/Clarus.jl.svg?branch=master)](https://travis-ci.org/liamhenry/Clarus.jl)
 
