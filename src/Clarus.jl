@@ -11,10 +11,14 @@ end
 
 
 
-#WINDOWS ONLY: GENERALISE FOR CROSS-PLATFORM LATER!!!!
 function keypath()
-  return joinpath("c:/","clarusft","keys")
+  if Sys.is_windows()
+    return joinpath("c:/","clarusft","keys")
+  else
+    return joinpath(homedir(),"clarusft","keys")
+  end
 end
+
 
 const EMPTY           = ""
 credentials           = ApiConfig(EMPTY,EMPTY)
