@@ -1,4 +1,5 @@
 # Clarus
+## Clarus Microservices
 
 [![Build Status](https://travis-ci.org/liamhenry/Clarus.jl.svg?branch=master)](https://travis-ci.org/liamhenry/Clarus.jl)
 
