@@ -4,25 +4,24 @@ import Requests
 export api_request, api_key!, api_secret!
 
 
-
 type ApiConfig
+  resource_path::String
   key::String
   secret::String
 end
 
-
-
-function keypath()
-  if Sys.is_windows()
-    return joinpath("c:/","clarusft","keys")
-  else
-    return joinpath(homedir(),"clarusft","keys")
-  end
+function defaultresourcepath()
+  root = Sys.is_windows() ? "c:/" : homedir()
+  return joinpath(root,"clarusft","data","test")
 end
 
+function keypath()
+  root = Sys.is_windows() ? "c:/" : homedir()
+  return joinpath(root,"clarusft","keys")
+end
 
 const EMPTY           = ""
-credentials           = ApiConfig(EMPTY,EMPTY)
+credentials           = ApiConfig(defaultresourcepath(),EMPTY,EMPTY)
 const KEYFILE         = "API-Key.txt"
 const SECRETFILE      =  "API-Secret.txt"
 
@@ -63,7 +62,6 @@ function api_secret!(secret)
   credentials.secret = secret
 end
 
-
 function api_request(category, functionName; params...)
   urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * "@apieval.clarusft.com/api/rest/v1/"
   restUrl  =  urlBase * category * "/" * functionName * ".csv"
@@ -73,7 +71,5 @@ function api_request(category, functionName; params...)
   end
   return r
 end
-
-
 
 end #MODULE-END
