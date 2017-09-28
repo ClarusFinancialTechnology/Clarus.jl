@@ -2,6 +2,7 @@ module Resource
 #=NOTE: Functions are added to mimic Clarus.py library.
             Further functionality to be added in the future.=#
 
+export read
 
 function openFile(filename; mode = "r")
   if isfile(filename)
