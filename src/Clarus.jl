@@ -20,8 +20,10 @@ include("Sdr.jl")
 include("Dates.jl")
 include("Util.jl")
 include("Trade.jl")
+include("Resource.jl")
 #
 
 using Clarus.Services: api_key!, api_request, api_secret!
+using Clarus.Resource: read 
 
 end #MODULE-END
