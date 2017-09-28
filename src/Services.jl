@@ -4,7 +4,7 @@ import Requests
 export api_request, api_key!, api_secret!
 
 
-type ApiConfig
+struct ApiConfig
   resource_path::String
   key::String
   secret::String
