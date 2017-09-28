@@ -23,6 +23,5 @@ include("Trade.jl")
 #
 
 using Clarus.Services: api_key!, api_request, api_secret!
-#import Trade
 
 end #MODULE-END
