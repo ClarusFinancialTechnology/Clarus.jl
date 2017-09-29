@@ -1,16 +1,17 @@
 #api_request_response container
 module Response
 
+import Requests
 import HttpCommon
+import DataFrames
 
 export ApiResponse
 
 type ApiResponse
   httpresponse::HttpCommon.Response
-  _stats
-  __str
-  __parsed
-ApiResponse(resp::HttpCommon.Response) = new(resp,nothing,nothing,nothing)
+  stats
+  parsed
+  ApiResponse(resp::HttpCommon.Response) = new(resp,nothing,nothing)
 end
 
 function text(response::ApiResponse)
@@ -27,6 +28,13 @@ end
 
 function status(response::ApiResponse)
   return response.httpresponse.status
+end
+
+function Base.print(response::ApiResponse)
+  if response.parsed == nothing
+    response.parsed = DataFrames.readtable(IOBuffer(Requests.bytes(response.httpresponse));separator = ',')
+  end
+  return print(response.parsed)
 end
 
 #sets
