@@ -4,7 +4,7 @@ import Requests
 export api_request, api_key, api_secret, api_resource_path
 
 
-struct ApiConfig
+type ApiConfig
   resource_path::String
   key::String
   secret::String
@@ -45,12 +45,10 @@ function readCredentialFile(filename::String)
   if length(filename) == 0
     return EMPTY
   end
-
   filepath = joinpath(keypath(),filename)
   if isfile(filepath)
-
+    f = open(filepath)
     try
-      f = open(filepath)
       x = strip(readstring(f))
       return x
     finally
