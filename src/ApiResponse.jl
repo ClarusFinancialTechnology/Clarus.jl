@@ -4,6 +4,7 @@ module Response
 import Requests
 import HttpCommon
 import DataFrames
+import CSV
 
 export ApiResponse
 
@@ -32,29 +33,12 @@ end
 
 function Base.print(response::ApiResponse)
   if isnull(response.parsed)
-    response.parsed = Nullable(DataFrames.readtable(IOBuffer(Requests.bytes(response.httpresponse));separator = ','))
+    response.parsed = Nullable(CSV.read(IOBuffer(Requests.bytes(response.httpresponse));delim = ','))
   end
   return print(get(response.parsed))
 end
 
-#sets
-
-
-#end-sets
-
-#getters
-#=
-function text(response::ApiResponse)
-  return response.httpresponse.text
-end
-
-function results(response::ApiResponse)
-  return response.httpresponse
-end
-
-function
-
-
-#end-getters=#
+#Changes: look into the header to see if it is csv or tsv etc..
+#Change the response to ApiResponse container
 
 end #MODULE-END
