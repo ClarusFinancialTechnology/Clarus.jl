@@ -23,7 +23,7 @@ include("Trade.jl")
 include("Resource.jl")
 #
 
-using Clarus.Services: api_key!, api_request, api_secret!
-using Clarus.Resource: read 
+using Clarus.Services: api_key, api_request, api_secret
+using Clarus.Resource: read
 
 end #MODULE-END
