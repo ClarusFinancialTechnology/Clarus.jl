@@ -1,5 +1,5 @@
 # Clarus
-## Clarus Microservices
+A Julia library for [Clarus Microservices API](https://www.clarusft.com/products/microservices/).
 ### Example Usage
 ```julia
 julia> import Clarus
