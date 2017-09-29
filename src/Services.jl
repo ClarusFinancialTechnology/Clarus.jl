@@ -9,7 +9,7 @@ struct ApiConfig
   key::String
   secret::String
   ApiConfig(key,secret) = new(defaultresourcepath(),key,secret)
-  ApiConfig(resource_path,key,secret)
+  ApiConfig(resource_path,key,secret) = new(resource_path,key,secret)
 end
 
 function defaultresourcepath()
