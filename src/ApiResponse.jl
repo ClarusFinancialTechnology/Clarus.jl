@@ -13,6 +13,22 @@ type ApiResponse
 ApiResponse(resp::HttpCommon.Response) = new(resp,nothing,nothing,nothing)
 end
 
+function text(response::ApiResponse)
+  return String(response.httpresponse.data)
+end
+
+function data(response::ApiResponse)
+  return response.httpresponse.data
+end
+
+function headers(response::ApiResponse)
+  return response.httpresponse.headers
+end
+
+function status(response::ApiResponse)
+  return response.httpresponse.status
+end
+
 #sets
 
 
