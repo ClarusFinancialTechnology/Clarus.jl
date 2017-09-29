@@ -1,13 +1,15 @@
 module Services
 
 import Requests
-export api_request, api_key!, api_secret!
+export api_request, api_key, api_secret, api_resource_path
 
 
 struct ApiConfig
   resource_path::String
   key::String
   secret::String
+  ApiConfig(key,secret) = new(defaultresourcepath(),key,secret)
+  ApiConfig(resource_path,key,secret)
 end
 
 function defaultresourcepath()
@@ -21,7 +23,7 @@ function keypath()
 end
 
 const EMPTY           = ""
-credentials           = ApiConfig(defaultresourcepath(),EMPTY,EMPTY)
+credentials           = ApiConfig(EMPTY,EMPTY)
 const KEYFILE         = "API-Key.txt"
 const SECRETFILE      =  "API-Secret.txt"
 
@@ -40,10 +42,15 @@ function _api_secret!(c::ApiConfig)
 end
 
 function readCredentialFile(filename::String)
+  if length(filename) == 0
+    return EMPTY
+  end
+
   filepath = joinpath(keypath(),filename)
   if isfile(filepath)
-    f = open(filepath)
+
     try
+      f = open(filepath)
       x = strip(readstring(f))
       return x
     finally
@@ -54,13 +61,18 @@ function readCredentialFile(filename::String)
 end
 
 
-function api_key!(key)
-  credentials.key = key
+function api_key(x)
+  credentials.key = x
 end
 
-function api_secret!(secret)
-  credentials.secret = secret
+function api_secret(x)
+  credentials.secret = x
 end
+
+function api_resource_path(x)
+  credentials.resource_path = x
+end
+
 
 function api_request(category, functionName; params...)
   urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * "@apieval.clarusft.com/api/rest/v1/"
