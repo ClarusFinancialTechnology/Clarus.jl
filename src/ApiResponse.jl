@@ -3,6 +3,8 @@ module Response
 
 import HttpCommon
 
+export ApiResponse
+
 type ApiResponse
   httpresponse::HttpCommon.Response
   _stats
