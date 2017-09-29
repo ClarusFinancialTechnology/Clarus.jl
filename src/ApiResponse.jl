@@ -10,8 +10,8 @@ export ApiResponse
 type ApiResponse
   httpresponse::HttpCommon.Response
   stats
-  parsed
-  ApiResponse(resp::HttpCommon.Response) = new(resp,nothing,nothing)
+  parsed::Nullable{DataFrames.DataFrame}
+  ApiResponse(resp::HttpCommon.Response) = new(resp,nothing,Nullable{DataFrames.DataFrame}())
 end
 
 function text(response::ApiResponse)
@@ -31,10 +31,10 @@ function status(response::ApiResponse)
 end
 
 function Base.print(response::ApiResponse)
-  if response.parsed == nothing
-    response.parsed = DataFrames.readtable(IOBuffer(Requests.bytes(response.httpresponse));separator = ',')
+  if isnull(response.parsed)
+    response.parsed = Nullable(DataFrames.readtable(IOBuffer(Requests.bytes(response.httpresponse));separator = ','))
   end
-  return print(response.parsed)
+  return print(get(response.parsed))
 end
 
 #sets
