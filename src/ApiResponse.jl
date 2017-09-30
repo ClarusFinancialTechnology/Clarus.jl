@@ -1,7 +1,6 @@
 #api_request_response container
 module Response
 
-import Requests
 import HttpCommon
 import DataFrames
 import CSV
@@ -33,7 +32,7 @@ end
 
 function Base.print(response::ApiResponse)
   if isnull(response.parsed)
-    response.parsed = Nullable(CSV.read(IOBuffer(Requests.bytes(response.httpresponse));delim = ','))
+    response.parsed = Nullable(CSV.read(IOBuffer(response.httpresponse.data);delim = ','))
   end
   return print(get(response.parsed))
 end
