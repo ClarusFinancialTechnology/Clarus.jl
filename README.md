@@ -3,8 +3,7 @@ A Julia library for [Clarus Microservices API](https://www.clarusft.com/products
 ### Example Usage
 ```julia
 julia> import Clarus
-julia> response = Clarus.Trade.price(trade="USD 10Y 100m pay 2.1%")
-julia> print(Requests.readstring(response))
+julia> print(Clarus.Trade.price(trade="USD 10Y 100m pay 2.1%"))
 ```
 
 

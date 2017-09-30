@@ -1,3 +1,4 @@
 julia 0.6
 Requests 0.5
-DataFrames
+DataFrames 0.10
+CSV 0.1
