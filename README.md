@@ -1,5 +1,9 @@
 # Clarus
 A Julia library for [Clarus Microservices API](https://www.clarusft.com/products/microservices/).
+### Installation
+```julia
+julia> Pkg.add("Clarus")
+```
 ### Example Usage
 ```julia
 julia> import Clarus
