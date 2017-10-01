@@ -5,38 +5,50 @@ import HttpCommon
 import DataFrames
 import CSV
 
-export ApiResponse
+using DataFrames: DataFrame
+
+export ApiResponse, read
 
 type ApiResponse
   httpresponse::HttpCommon.Response
   stats
-  parsed::Nullable{DataFrames.DataFrame}
+  parsed::Nullable{DataFrame}
   ApiResponse(resp::HttpCommon.Response) = new(resp,nothing,Nullable{DataFrames.DataFrame}())
 end
 
-function text(response::ApiResponse)
-  return String(response.httpresponse.data)
+function text(r::ApiResponse)
+  return String(r.httpresponse.data)
 end
 
-function data(response::ApiResponse)
-  return response.httpresponse.data
+function data(r::ApiResponse)
+  return r.httpresponse.data
 end
 
-function headers(response::ApiResponse)
-  return response.httpresponse.headers
+function headers(r::ApiResponse)
+  return r.httpresponse.headers
 end
 
-function status(response::ApiResponse)
-  return response.httpresponse.status
+function status(r::ApiResponse)
+  return r.httpresponse.status
 end
 
-function Base.print(response::ApiResponse)
-  if isnull(response.parsed)
-    response.parsed = Nullable(CSV.read(IOBuffer(response.httpresponse.data);delim = ','))
+function read(r::ApiResponse,  sink::Type=DataFrame)
+  return CSV.read(IOBuffer(r.httpresponse.data),sink;delim = ',')
+end
+
+function Base.print(io::IO, r::ApiResponse)
+  if isnull(r.parsed)
+    r.parsed = Nullable(read(r,DataFrame))
   end
-  return print(get(response.parsed))
+  return Base.print(get(r.parsed))
 end
 
+function Base.show(io::IO, r::ApiResponse)
+  if isnull(r.parsed)
+    r.parsed = Nullable(read(r,DataFrame))
+  end
+  return Base.show(get(r.parsed))
+end
 #Changes: look into the header to see if it is csv or tsv etc..
 #Change the response to ApiResponse container
 
