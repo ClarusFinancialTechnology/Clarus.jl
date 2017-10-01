@@ -9,6 +9,7 @@ using DataFrames: DataFrame
 
 export ApiResponse, read
 
+
 type ApiResponse
   httpresponse::HttpCommon.Response
   stats
@@ -32,8 +33,8 @@ function status(r::ApiResponse)
   return r.httpresponse.status
 end
 
-function read(r::ApiResponse,  sink::Type=DataFrame)
-  return CSV.read(IOBuffer(r.httpresponse.data),sink;delim = ',')
+function read(r::ApiResponse,  sink::Type=DataFrame; dateformat::Union{AbstractString,Dates.DateFormat}=Dates.ISODateFormat)
+  return CSV.read(IOBuffer(r.httpresponse.data),sink;delim = ',', dateformat=dateformat)
 end
 
 function Base.print(io::IO, r::ApiResponse)
