@@ -1,9 +1,8 @@
 module Services
-
+include("Response.jl")
 
 import Requests
-using ..Clarus.Response: ApiResponse
- 
+
 export api_request, api_key, api_secret, api_resource_path
 
 
@@ -82,7 +81,7 @@ function api_request(category, functionName; params...)
   if Requests.statuscode(r)!=200
     error("Request to " * category * "/" * functionName * " failed with status code: " * string(Requests.statuscode(r)))
   end
-  return ApiResponse(r)
+  return Response(r)
 end
 
 end #MODULE-END

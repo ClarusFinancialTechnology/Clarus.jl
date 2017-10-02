@@ -20,12 +20,11 @@ include(joinpath("categories","Dates.jl"))
 include(joinpath("categories","Util.jl"))
 include(joinpath("categories","Trade.jl"))
 include("Resource.jl")
-include("ApiResponse.jl")
 include("Services.jl")
 #
 
-using Clarus.Services: api_key, api_request, api_secret
+using Clarus.Services: api_key, api_request, api_secret, Response, dataframe!
 using Clarus.Resource: read
-using Clarus.Response: ApiResponse
+
 
 end #MODULE-END
