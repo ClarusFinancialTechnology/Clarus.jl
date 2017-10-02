@@ -50,7 +50,7 @@ end
 
 function Base.show(io::IO, r::Response)
   if isnull(r.dataframe)
-    r.parsed = Nullable(read(r,DataFrame))
+    r.dataframe = Nullable(read(r,DataFrame))
   end
   return Base.show(get(r.dataframe))
 end
