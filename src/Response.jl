@@ -7,7 +7,7 @@ using DataFrames: DataFrame
 
 export Response, read, dataframe
 
-type Response
+mutable struct Response
   httpresponse::HttpCommon.Response
   stats
   dataframe::Nullable{DataFrame}

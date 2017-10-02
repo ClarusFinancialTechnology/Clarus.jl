@@ -6,7 +6,7 @@ import Requests
 export api_request, api_key, api_secret, api_resource_path
 
 
-type ApiConfig
+mutable struct ApiConfig
   resource_path::String
   key::String
   secret::String
@@ -15,12 +15,12 @@ type ApiConfig
 end
 
 function defaultresourcepath()
-  root = Sys.is_windows() ? "c:/" : homedir()
+  root = Sys.iswindows() ? "c:/" : homedir()
   return joinpath(root,"clarusft","data","test")
 end
 
 function keypath()
-  root = Sys.is_windows() ? "c:/" : homedir()
+  root = Sys.iswindows() ? "c:/" : homedir()
   return joinpath(root,"clarusft","keys")
 end
 
