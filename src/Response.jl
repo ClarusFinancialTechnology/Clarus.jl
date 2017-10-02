@@ -1,4 +1,4 @@
-#api_request_response container
+
 import HttpCommon
 import DataFrames
 import CSV
@@ -35,10 +35,7 @@ function read(r::Response,  sink::Type=DataFrame, ; dateformat::Dates.DateFormat
 end
 
 function Base.print(io::IO, r::Response)
-  if isnull(r.dataframe)
-    r.dataframe = Nullable(read(r,DataFrame))
-  end
-  return Base.print(get(r.dataframe))
+  return Base.print(dataframe!(r))
 end
 
 function dataframe!(r::Response)
@@ -49,10 +46,6 @@ function dataframe!(r::Response)
 end
 
 function Base.show(io::IO, r::Response)
-  if isnull(r.dataframe)
-    r.parsed = Nullable(read(r,DataFrame))
-  end
-  return Base.show(get(r.dataframe))
+  return Base.show(dataframe!(r))
 end
-#Changes: look into the header to see if it is csv or tsv etc..
-#Change the response to ApiResponse container
+
