@@ -15,12 +15,12 @@ mutable struct ApiConfig
 end
 
 function defaultresourcepath()
-  root = Sys.iswindows() ? "c:/" : homedir()
+  root = Sys.is_windows() ? "c:/" : homedir()
   return joinpath(root,"clarusft","data","test")
 end
 
 function keypath()
-  root = Sys.iswindows() ? "c:/" : homedir()
+  root = Sys.is_windows() ? "c:/" : homedir()
   return joinpath(root,"clarusft","keys")
 end
 
