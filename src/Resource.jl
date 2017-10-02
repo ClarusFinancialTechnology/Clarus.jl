@@ -1,10 +1,16 @@
 module Resource
 #=NOTE: Purpose of module to mimic  clarus.resource_util.py, clarus library.=#
-
+using ..Clarus
 export read
 
 function openFile(filename; mode = "r")
   if length(filename) !=0
+    if isfile(filename)
+      return open(filename,mode)
+    end
+  end
+  if isdir(Clarus.Services.credentials.resource_path)
+    filename = joinpath(Clarus.Services.credentials.resource_path,filename)
     if isfile(filename)
       return open(filename,mode)
     end
