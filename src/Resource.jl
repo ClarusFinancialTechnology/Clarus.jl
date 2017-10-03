@@ -1,5 +1,4 @@
 module Resource
-#=NOTE: Purpose of module to mimic  clarus.resource_util.py, clarus library.=#
 using ..Clarus
 export read
 
