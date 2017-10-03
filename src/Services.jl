@@ -73,22 +73,19 @@ function api_resource_path(x)
   credentials.resource_path = x
 end
 
+function requesterrormessage(r)
+  errormessage     = get(r.headers,MESSAGES,"")  #If Kwargs are blank,
+  errormessage   = string(errormessage,"\n",String(r.data)) #If function name is wrong.
+end
 
 function api_request(category, functionName; params...)
   urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * "@apieval.clarusft.com/api/rest/v1/"
   restUrl  =  urlBase * category * "/" * functionName * ".csv"
   r = Requests.post(restUrl, json=Dict(params))
   if Requests.statuscode(r)!=200
-    requesterrormessage(r)
+    error("Request to " * category * "/" * functionName * " failed with status code: " * string(Requests.statuscode(r))* "\n"*requesterrormessage(r))
   end
   return Response(r)
 end
 
 end #MODULE-END
-
-
-function requesterrormessage(r)
-  headersmessage = r.headers[MESSAGES]   #If Kwargs are blank,
-  errormessage   =  String(r.data)       #If function name is wrong. 
-  error("Request to " * category * "/" * functionName * " failed with status code: " * string(Requests.statuscode(r))* "\n"* headersmessage*"\n"*errormessage)
-end
