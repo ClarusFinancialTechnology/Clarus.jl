@@ -3,20 +3,31 @@ include("Response.jl")
 
 import Requests
 
-export api_request, api_key, api_secret, api_resource_path
+export api_request, api_key, api_secret, api_resource_path, api_savefile_path
 
 
 mutable struct ApiConfig
   resource_path::String
+  savefile_path::String
   key::String
   secret::String
-  ApiConfig(key,secret) = new(defaultresourcepath(),key,secret)
-  ApiConfig(resource_path,key,secret) = new(resource_path,key,secret)
+  ApiConfig(key,secret) = new(defaultresourcepath(),defaultsavefilepath(),key,secret)
+  ApiConfig(resource_path,key,secret) = new(resource_path,defaultsavepath(),key,secret)
+  ApiConfig(resource_path,savefile_path,key,secret) = new(resource_path,savefile_path,key,secret)
 end
 
 function defaultresourcepath()
   root = Sys.is_windows() ? "c:/" : homedir()
-  return joinpath(root,"clarusft","data","test")
+  DEFAULT_RESOURCEPATH = joinpath(root,"clarusft","data","test")
+  if !isdir(DEFAULT_RESOURCEPATH) mkpath(DEFAULT_RESOURCEPATH) end
+  return DEFAULT_RESOURCEPATH
+end
+
+function defaultsavefilepath()
+root = Sys.is_windows() ? "c:/" : homedir()
+DEFAULT_SAVEPATH = joinpath(root,"clarusft","data","saved_data")
+if !isdir(DEFAULT_SAVEPATH) mkpath(DEFAULT_SAVEPATH) end
+return DEFAULT_SAVEPATH
 end
 
 function keypath()
@@ -71,6 +82,10 @@ end
 
 function api_resource_path(x)
   credentials.resource_path = x
+end
+
+function api_savefile_path(x)
+  credentials.savefile_path = x
 end
 
 function requesterrormessage(r)

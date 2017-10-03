@@ -35,11 +35,16 @@ function readfiles(filenames)
 end
 
 function write(filename,r::Clarus.Services.Response)
-  #GET-PATH() if length(dirname)>0
-
+  if length(dirname(filename)) == 0
+  filename = joinpath(Clarus.Services.credentials.savefile_path,filename)
+  else
+    if !isdir(dirname(filename))
+      mkpath(dirname(filename))
+    end
+    Clarus.Services.credentials.savefile_path = dirname(filename)
+  end
   df = Clarus.dataframe!(r)
   CSV.write(filename,df)
-
 end
 
 
