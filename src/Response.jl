@@ -60,7 +60,7 @@ function dataframe!(r::Response)
   if isnull(r.dataframe)
     r.dataframe = Nullable(read(r,DataFrame))
   end
-  return get(Nullable(r.dataframe))
+  return get(r.dataframe)
 end
 
 function Base.show(io::IO, r::Response)
@@ -79,7 +79,7 @@ function stats!(r::Response)
       r.stats = Nullable(d)
     end
   end
-  return get(Nullable(r.stats))
+  return get(r.stats)
 end
 
 
