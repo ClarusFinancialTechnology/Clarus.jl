@@ -1,6 +1,7 @@
 module Resource
 using ..Clarus
-export read
+import CSV
+export read,write
 
 function openFile(filename; mode = "r")
   if length(filename) !=0
@@ -32,5 +33,15 @@ function readfiles(filenames)
   end
   return strings
 end
+
+function write(filename,r::Clarus.Services.Response)
+  #GET-PATH() if length(dirname)>0
+
+  df = Clarus.dataframe!(r)
+  CSV.write(filename,df)
+
+end
+
+
 
 end #MODULE-END
