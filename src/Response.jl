@@ -10,7 +10,7 @@ export Response, read, dataframe!, stats!, warnings
 #GLOBALS
 const STATS        = "X-Clarus-Stats"
 const WARNINGS     = "X-Clarus-Messages"
-const MESSAGES     = "messaged"
+const MESSAGES     = "messages"
 
 #REQUEST STATS
 const GRID_TOTAL   = "GridTotal"
@@ -60,7 +60,7 @@ function dataframe!(r::Response)
   if isnull(r.dataframe)
     r.dataframe = Nullable(read(r,DataFrame))
   end
-  return get(r.dataframe)
+  return get(Nullable(r.dataframe))
 end
 
 function Base.show(io::IO, r::Response)
@@ -79,7 +79,7 @@ function stats!(r::Response)
       r.stats = Nullable(d)
     end
   end
-  return get(r.stats)
+  return get(Nullable(r.stats))
 end
 
 
@@ -88,18 +88,18 @@ function warnings(r::Response)
   return r.httpresponse.headers[WARNINGS]
 end
 
-function stat(r::Response,stat::String)
+function stat!(r::Response,stat::String)
   return stats!(r)[stat]
 end
 
-function total(r::Response)
-  return stat(r, GRID_TOTAL)
+function total!(r::Response)
+  return stat!(r, GRID_TOTAL)
 end
 
-function requestid(r::Response)
-  return stat(r,REQUEST_ID)
+function requestid!(r::Response)
+  return stat!(r,REQUEST_ID)
 end
 
-function gridid(r::Response)
-  return stat(r,GRID_ID)
+function gridid!(r::Response)
+  return stat!(r,GRID_ID)
 end
