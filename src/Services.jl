@@ -79,9 +79,16 @@ function api_request(category, functionName; params...)
   restUrl  =  urlBase * category * "/" * functionName * ".csv"
   r = Requests.post(restUrl, json=Dict(params))
   if Requests.statuscode(r)!=200
-    error("Request to " * category * "/" * functionName * " failed with status code: " * string(Requests.statuscode(r)))
+    requesterrormessage(r)
   end
   return Response(r)
 end
 
 end #MODULE-END
+
+
+function requesterrormessage(r)
+  headersmessage = r.headers[MESSAGES]   #If Kwargs are blank,
+  errormessage   =  String(r.data)       #If function name is wrong. 
+  error("Request to " * category * "/" * functionName * " failed with status code: " * string(Requests.statuscode(r))* "\n"* headersmessage*"\n"*errormessage)
+end
