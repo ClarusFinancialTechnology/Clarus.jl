@@ -19,14 +19,18 @@ end
 function defaultresourcepath()
   root = Sys.is_windows() ? "c:/" : homedir()
   DEFAULT_RESOURCEPATH = joinpath(root,"clarusft","data","test")
-  if !isdir(DEFAULT_RESOURCEPATH) mkpath(DEFAULT_RESOURCEPATH) end
+  if !isdir(DEFAULT_RESOURCEPATH)
+    error("Resource path does not exist: "*DEFAULT_RESOURCEPATH)
+  end
   return DEFAULT_RESOURCEPATH
 end
 
 function defaultsavefilepath()
 root = Sys.is_windows() ? "c:/" : homedir()
 DEFAULT_SAVEPATH = joinpath(root,"clarusft","data","saved_data")
-if !isdir(DEFAULT_SAVEPATH) mkpath(DEFAULT_SAVEPATH) end
+if !isdir(DEFAULT_SAVEPATH)
+error("Save path does not exist: "*DEFAULT_SAVEPATH)
+end
 return DEFAULT_SAVEPATH
 end
 
