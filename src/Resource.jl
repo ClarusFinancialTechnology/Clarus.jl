@@ -36,15 +36,12 @@ end
 
 function write(filename,r::Clarus.Services.Response)
   if length(dirname(filename)) == 0
-  filename = joinpath(Clarus.Services.credentials.savefile_path,filename)
-  else
-    if !isdir(dirname(filename))
-      mkpath(dirname(filename))
-    end
+    filename = joinpath(Clarus.Services.credentials.savefile_path,filename)
   end
   open(filename,"w") do f
     Base.write(f,r.httpresponse.data)
   end
+return
 end
 
 
