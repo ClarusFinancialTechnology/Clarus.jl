@@ -41,10 +41,10 @@ function write(filename,r::Clarus.Services.Response)
     if !isdir(dirname(filename))
       mkpath(dirname(filename))
     end
-    Clarus.Services.credentials.savefile_path = dirname(filename)
   end
-  df = Clarus.dataframe!(r)
-  CSV.write(filename,df)
+  open(filename,"w") do f
+    Base.write(f,r.httpresponse.data)
+  end
 end
 
 
