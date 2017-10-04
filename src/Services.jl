@@ -18,20 +18,13 @@ end
 
 function defaultresourcepath()
   root = Sys.is_windows() ? "c:/" : homedir()
-  DEFAULT_RESOURCEPATH = joinpath(root,"clarusft","data","test")
-  if !isdir(DEFAULT_RESOURCEPATH)
-    error("Resource path does not exist: "*DEFAULT_RESOURCEPATH)
-  end
-  return DEFAULT_RESOURCEPATH
+  return joinpath(root,"clarusft","data","test")
+
 end
 
 function defaultsavefilepath()
 root = Sys.is_windows() ? "c:/" : homedir()
-DEFAULT_SAVEPATH = joinpath(root,"clarusft","data","saved_data")
-if !isdir(DEFAULT_SAVEPATH)
-error("Save path does not exist: "*DEFAULT_SAVEPATH)
-end
-return DEFAULT_SAVEPATH
+return joinpath(root,"clarusft","data","saved_data")
 end
 
 function keypath()
@@ -93,7 +86,7 @@ function api_savefile_path(x)
 end
 
 function requesterrormessage(r)
-  errormessage     = get(r.headers,MESSAGES,"")  #If Kwargs are blank,
+  errormessage   = get(r.headers,MESSAGES,"")  #If Kwargs are blank,
   errormessage   = string(errormessage,"\n",String(r.data)) #If function name is wrong.
 end
 
