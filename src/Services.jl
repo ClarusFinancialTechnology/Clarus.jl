@@ -9,11 +9,12 @@ export api_request, api_key, api_secret, api_resource_path, api_savefile_path
 mutable struct ApiConfig
   resource_path::String
   savefile_path::String
+  base_url::String
   key::String
   secret::String
-  ApiConfig(key,secret) = new(defaultresourcepath(),defaultsavefilepath(),key,secret)
-  ApiConfig(resource_path,key,secret) = new(resource_path,defaultsavepath(),key,secret)
-  ApiConfig(resource_path,savefile_path,key,secret) = new(resource_path,savefile_path,key,secret)
+  ApiConfig(key,secret) = new(defaultresourcepath(),defaultsavefilepath(),defaultbaseurl(),key,secret)
+  ApiConfig(resource_path,key,secret) = new(resource_path,defaultsavepath(),defaultbaseurl(),key,secret)
+  ApiConfig(resource_path,savefile_path,key,secret) = new(resource_path,savefile_path,defaultbaseurl(),key,secret)
 end
 
 function defaultresourcepath()
@@ -26,6 +27,11 @@ function defaultsavefilepath()
 root = Sys.is_windows() ? "c:/" : homedir()
 return joinpath(root,"clarusft","data","saved_data")
 end
+
+function defaultbaseurl()
+  return "@eval.clarusft.com/api/rest/v1/"
+end
+
 
 function keypath()
   root = Sys.is_windows() ? "c:/" : homedir()
@@ -85,13 +91,17 @@ function api_savefile_path(x)
   credentials.savefile_path = x
 end
 
+function api_baseurl(x)
+  credentials.base_url = x
+end
+
 function requesterrormessage(r)
   errormessage   = get(r.headers,MESSAGES,"")  #If Kwargs are blank,
   errormessage   = string(errormessage,"\n",String(r.data)) #If function name is wrong.
 end
 
 function api_request(category, functionName; params...)
-  urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * "@apieval.clarusft.com/api/rest/v1/"
+  urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * credentials.base_url
   restUrl  =  urlBase * category * "/" * functionName * ".csv"
   r = Requests.post(restUrl, json=Dict(params))
   if Requests.statuscode(r)!=200
