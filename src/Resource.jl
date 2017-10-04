@@ -4,18 +4,13 @@ import CSV
 export read,write
 
 function openFile(filename; mode = "r")
-  if length(filename) !=0
-    if isfile(filename)
-      return open(filename,mode)
-    end
+  if isfile(filename)
+    return open(filename,mode)
   end
   if isdir(Clarus.Services.credentials.resource_path)
     filename = joinpath(Clarus.Services.credentials.resource_path,filename)
-    if isfile(filename)
-      return open(filename,mode)
-    end
   end
-  return
+  return open(filename,mode)
 end
 
 function read(filenames)
@@ -38,10 +33,10 @@ function write(filename,r::Clarus.Services.Response)
   if length(dirname(filename)) == 0
     filename = joinpath(Clarus.Services.credentials.savefile_path,filename)
   end
-  open(filename,"w") do f
-    Base.write(f,r.httpresponse.data)
-  end
-return
+  f = openFile(filename;mode="w")
+  Base.write(f,r.httpresponse.data)
+  close(f)
+  return
 end
 
 

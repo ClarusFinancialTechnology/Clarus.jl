@@ -25,7 +25,7 @@ end
 
 function defaultsavefilepath()
 root = Sys.is_windows() ? "c:/" : homedir()
-return joinpath(root,"clarusft","data","saved_data")
+return joinpath(root,"clarusft","data","test")
 end
 
 function defaultbaseurl()
