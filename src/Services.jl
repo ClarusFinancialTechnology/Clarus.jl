@@ -3,13 +3,13 @@ include("Response.jl")
 
 import Requests
 
-export api_request, api_key, api_secret, api_resource_path, api_savefile_path
+export api_request, api_key, api_secret, api_resource_path, api_savefile_path, api_baseurl
 
 
 mutable struct ApiConfig
   resource_path::String
   savefile_path::String
-  base_url::String
+  baseurl::String
   key::String
   secret::String
   ApiConfig(key,secret) = new(defaultresourcepath(),defaultsavefilepath(),defaultbaseurl(),key,secret)
@@ -92,7 +92,7 @@ function api_savefile_path(x)
 end
 
 function api_baseurl(x)
-  credentials.base_url = x
+  credentials.baseurl = x
 end
 
 function requesterrormessage(r)
@@ -101,7 +101,7 @@ function requesterrormessage(r)
 end
 
 function api_request(category, functionName; params...)
-  urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * credentials.base_url
+  urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * credentials.baseurl
   restUrl  =  urlBase * category * "/" * functionName * ".csv"
   r = Requests.post(restUrl, json=Dict(params))
   if Requests.statuscode(r)!=200
