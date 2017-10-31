@@ -29,6 +29,7 @@ mutable struct Response
   httpresponse::HttpCommon.Response
   stats::Nullable{Dict{String,String}}
   dataframe::Nullable{DataFrame}
+  warnings::Nullable{Any}
   Response(r::HttpCommon.Response) = new(r,Nullable{Dict{String,String}}(),Nullable{DataFrames.DataFrame}())
 end
 
@@ -85,10 +86,8 @@ function stats!(r::Response)
 end
 
 
+
 #getters
-function warnings(r::Response)
-  return r.httpresponse.headers[WARNINGS]
-end
 
 function stat!(r::Response,stat::String)
   return get(stats!(r),stat,nothing)
@@ -105,6 +104,16 @@ end
 function gridid!(r::Response)
   return stat!(r,GRID_ID)
 end
+function warnings!(r::Response)
+  if isnull(r.warnings)
+    r.warnings = Nullable(get(r.httpresponse.headers,WARNINGS,nothing))
+  end
+  return r.warnings
+end
+
+
+
+
 
 function pivot(grid::Response,rowAxis="Currency",colAxis="SubType",ccy="USD",view="Latest")
   return Response(gridrequest(("GridId"=>gridid!(grid),"Row"=>rowAxis,"Col"=>colAxis,"reportCcy"=>ccy,"View"=>view)))
