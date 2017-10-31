@@ -101,9 +101,14 @@ function requesterrormessage(r)
   return errormessage
 end
 
-function api_request(category, functionName; params...)
+function geturl(category,functionName)
   urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * credentials.baseurl
   restUrl  =  urlBase * category * "/" * functionName * ".csv"
+  return restUrl
+end
+
+function api_request(category, functionName; params...)
+  restUrl = geturl(category,functionName)
   r = Requests.post(restUrl, json=Dict(params))
   if Requests.statuscode(r)!=200
     error("Request to " * category * "/" * functionName * " failed with status code: " * string(Requests.statuscode(r))* "\n"*requesterrormessage(r))
