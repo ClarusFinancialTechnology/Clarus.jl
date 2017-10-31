@@ -5,7 +5,7 @@ import CSV
 
 using DataFrames: DataFrame
 
-export Response, read, dataframe!, stats!, warnings,drilldown,pivot
+export Response, read, dataframe!, stats!, warnings, drilldown, pivot
 
 #GLOBALS
 const STATS        = "X-Clarus-Stats"
