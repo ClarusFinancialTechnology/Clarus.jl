@@ -98,6 +98,7 @@ end
 function requesterrormessage(r)
   errormessage   = get(r.headers,MESSAGES,"")  #If Kwargs are blank,
   errormessage   = string(errormessage,"\n",String(r.data)) #If function name is wrong.
+  return errormessage
 end
 
 function api_request(category, functionName; params...)
