@@ -2,7 +2,6 @@ module Services
 include("Response.jl")
 
 import Requests
-
 export api_request, api_key, api_secret, api_resource_path, api_savefile_path, api_baseurl
 
 
@@ -10,11 +9,12 @@ mutable struct ApiConfig
   resource_path::String
   savefile_path::String
   baseurl::String
+  user_agent::String
   key::String
   secret::String
-  ApiConfig(key,secret) = new(defaultresourcepath(),defaultsavefilepath(),defaultbaseurl(),key,secret)
-  ApiConfig(resource_path,key,secret) = new(resource_path,defaultsavepath(),defaultbaseurl(),key,secret)
-  ApiConfig(resource_path,savefile_path,key,secret) = new(resource_path,savefile_path,defaultbaseurl(),key,secret)
+  ApiConfig(key,secret) = new(defaultresourcepath(),defaultsavefilepath(),defaultbaseurl(),defaultuseragent(),key,secret)
+  ApiConfig(resource_path,key,secret) = new(resource_path,defaultsavepath(),defaultbaseurl(),defaultuseragent(),key,secret)
+  ApiConfig(resource_path,savefile_path,key,secret) = new(resource_path,savefile_path,defaultbaseurl(),defaultuseragent(),key,secret)
 end
 
 function defaultresourcepath()
@@ -32,6 +32,10 @@ function defaultbaseurl()
   return "@eval.clarusft.com/api/rest/v1/"
 end
 
+function defaultuseragent()
+  return "Clarus.jl"*string(Pkg.installed("Clarus"))*" "*"julia-requests"*string(Pkg.installed("Requests"))
+end
+
 
 function keypath()
   root = Sys.is_windows() ? "c:/" : homedir()
@@ -42,6 +46,7 @@ const EMPTY           = ""
 credentials           = ApiConfig(EMPTY,EMPTY)
 const KEYFILE         = "API-Key.txt"
 const SECRETFILE      =  "API-Secret.txt"
+const UTIL_SERVICE    = "Util"
 
 function _api_key!(c::ApiConfig)
   if length(c.key) == 0
@@ -101,14 +106,14 @@ function requesterrormessage(r)
   return errormessage
 end
 
-function geturl(category,functionName)
+function url(category,functionName)
   urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * credentials.baseurl
   restUrl  =  urlBase * category * "/" * functionName * ".csv"
   return restUrl
 end
 
 function api_request(category, functionName; params...)
-  restUrl = geturl(category,functionName)
+  restUrl  = url(category,functionName)
   r = Requests.post(restUrl, json=Dict(params))
   if Requests.statuscode(r)!=200
     error("Request to " * category * "/" * functionName * " failed with status code: " * string(Requests.statuscode(r))* "\n"*requesterrormessage(r))

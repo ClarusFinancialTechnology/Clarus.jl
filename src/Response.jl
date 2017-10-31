@@ -5,7 +5,7 @@ import CSV
 
 using DataFrames: DataFrame
 
-export Response, read, dataframe!, stats!, warnings
+export Response, read, dataframe!, stats!, warnings,drilldown,pivot
 
 #GLOBALS
 const STATS        = "X-Clarus-Stats"
@@ -77,6 +77,8 @@ function stats!(r::Response)
           push!(d, strip(pair[1])=> strip(pair[2]))
       end
       r.stats = Nullable(d)
+    else
+      return Dict()
     end
   end
   return get(r.stats)
@@ -89,7 +91,7 @@ function warnings(r::Response)
 end
 
 function stat!(r::Response,stat::String)
-  return stats!(r)[stat]
+  return get(stats!(r),stat,nothing)
 end
 
 function total!(r::Response)
@@ -102,4 +104,17 @@ end
 
 function gridid!(r::Response)
   return stat!(r,GRID_ID)
+end
+
+function pivot(grid::Response,rowAxis="Currency",colAxis="SubType",ccy="USD",view="Latest")
+  return Response(gridrequest(("GridId"=>gridid!(grid),"Row"=>rowAxis,"Col"=>colAxis,"reportCcy"=>ccy,"View"=>view)))
+end
+
+function drilldown(grid::Response,row="Total",col="Total",view="Default")
+  return Response(gridrequest(("GridId"=>gridid!(grid),"DrilldownRow"=>row,"DrilldownCol"=>col,"DrilldownView"=>view)))
+end
+
+function gridrequest(params)
+  headers = ("Content-Type"=>"application/json","User-Agent"=>credentials.user_agent)
+  return Requests.post(url(UTIL_SERVICE,"Grid"),json = Dict(params),headers = Dict(headers))
 end
