@@ -23,7 +23,7 @@ include(joinpath("categories","Util.jl"))
 include(joinpath("categories","Trade.jl"))
 #
 
-using Clarus.Services: api_key, api_request, api_secret, Response, dataframe!
+using Clarus.Services: api_key, api_request, api_secret, Response, dataframe!,drilldown,pivot
 using Clarus.Resource: read,write
 
 

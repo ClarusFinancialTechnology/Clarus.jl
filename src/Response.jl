@@ -115,15 +115,15 @@ end
 
 
 
-function pivot(grid::Response,rowAxis="Currency",colAxis="SubType",ccy="USD",view="Latest")
-  return Response(gridrequest(("GridId"=>gridid!(grid),"Row"=>rowAxis,"Col"=>colAxis,"reportCcy"=>ccy,"View"=>view)))
+function pivot(grid::Response,rowAxis="Currency",colAxis="SubType",ccy="USD",view="Latest",output=credentials.default_outputtype)
+  return Response(gridrequest(("GridId"=>gridid!(grid),"Row"=>rowAxis,"Col"=>colAxis,"reportCcy"=>ccy,"View"=>view),output))
 end
 
-function drilldown(grid::Response,row="Total",col="Total",view="Default")
-  return Response(gridrequest(("GridId"=>gridid!(grid),"DrilldownRow"=>row,"DrilldownCol"=>col,"DrilldownView"=>view)))
+function drilldown(grid::Response,row="Total",col="Total",view="Default",output=credentials.default_outputtype)
+  return Response(gridrequest(("GridId"=>gridid!(grid),"DrilldownRow"=>row,"DrilldownCol"=>col,"DrilldownView"=>view),output))
 end
 
-function gridrequest(params)
+function gridrequest(params,output=credentials.default_outputtype)
   headers = ("Content-Type"=>"application/json","User-Agent"=>credentials.user_agent)
-  return Requests.post(url(UTIL_SERVICE,"Grid"),json = Dict(params),headers = Dict(headers))
+  return Requests.post(url(UTIL_SERVICE,"Grid",output),json = Dict(params),headers = Dict(headers))
 end

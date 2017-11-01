@@ -4,17 +4,24 @@ include("Response.jl")
 import Requests
 export api_request, api_key, api_secret, api_resource_path, api_savefile_path, api_baseurl
 
+outputtype = Dict(
+:CSV  => "csv",
+:TSV  => "tsv",
+:JSON => "json",
+:HTML => "html")
+
 
 mutable struct ApiConfig
+  default_outputtype::String
   resource_path::String
   savefile_path::String
   baseurl::String
   user_agent::String
   key::String
   secret::String
-  ApiConfig(key,secret) = new(defaultresourcepath(),defaultsavefilepath(),defaultbaseurl(),defaultuseragent(),key,secret)
-  ApiConfig(resource_path,key,secret) = new(resource_path,defaultsavepath(),defaultbaseurl(),defaultuseragent(),key,secret)
-  ApiConfig(resource_path,savefile_path,key,secret) = new(resource_path,savefile_path,defaultbaseurl(),defaultuseragent(),key,secret)
+  ApiConfig(key,secret) = new(outputtype[:CSV],defaultresourcepath(),defaultsavefilepath(),defaultbaseurl(),defaultuseragent(),key,secret)
+  ApiConfig(resource_path,key,secret) = new(outputtype[:CSV],resource_path,defaultsavepath(),defaultbaseurl(),defaultuseragent(),key,secret)
+  ApiConfig(resource_path,savefile_path,key,secret) = new(outputtype[:CSV],resource_path,savefile_path,defaultbaseurl(),defaultuseragent(),key,secret)
 end
 
 function defaultresourcepath()
@@ -45,7 +52,7 @@ end
 const EMPTY           = ""
 credentials           = ApiConfig(EMPTY,EMPTY)
 const KEYFILE         = "API-Key.txt"
-const SECRETFILE      =  "API-Secret.txt"
+const SECRETFILE      = "API-Secret.txt"
 const UTIL_SERVICE    = "Util"
 
 function _api_key!(c::ApiConfig)
@@ -106,9 +113,9 @@ function requesterrormessage(r)
   return errormessage
 end
 
-function url(category,functionName)
+function url(category,functionName,output=credentials.default_outputtype)
   urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * credentials.baseurl
-  restUrl  =  urlBase * category * "/" * functionName * ".csv"
+  restUrl  =  urlBase * category * "/" * functionName * "."*output  
   return restUrl
 end
 
