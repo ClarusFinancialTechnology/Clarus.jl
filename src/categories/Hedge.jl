@@ -2,7 +2,7 @@ module Hedge
 
 import ..Clarus
 
-function equvalents(;params...)
+function equivalents(;params...)
   return Clarus.api_request("Hedge","Equivalents";params...)
 end
 
