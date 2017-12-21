@@ -25,9 +25,12 @@ mutable struct ApiConfig
 end
 
 function defaultresourcepath()
-  root = Sys.is_windows() ? "c:/" : homedir()
-  return joinpath(root,"clarusft","data","test")
-
+  if haskey(ENV,"CHARM_RESOURCE_PATH")
+    return ENV["CHARM_RESOURCE_PATH"]
+  else
+    root = Sys.is_windows() ? "c:/" : homedir()
+    return joinpath(root,"clarusft","data","test")
+  end
 end
 
 function defaultsavefilepath()
@@ -36,7 +39,11 @@ return joinpath(root,"clarusft","data","test")
 end
 
 function defaultbaseurl()
-  return "@eval.clarusft.com/api/rest/v1/"
+  if haskey(ENV,"CHARM_API_URL")
+    return ENV["CHARM_API_URL"]
+  else
+    return "@eval.clarusft.com/api/rest/v1/"
+  end
 end
 
 function defaultuseragent()
@@ -112,6 +119,7 @@ function requesterrormessage(r)
   errormessage   = string(errormessage,"\n",String(r.data)) #If function name is wrong.
   return errormessage
 end
+
 
 function url(category,functionName,output=credentials.default_outputtype)
   # urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * credentials.baseurl
