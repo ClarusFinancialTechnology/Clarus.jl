@@ -123,8 +123,6 @@ end
 function api_request(category, functionName; params...)
   restUrl  = url(category,functionName)
   headers = Dict("Authorization"=>"Basic $(base64encode(_api_key!(credentials)*":"*_api_secret!(credentials)))")
-  display(headers)
-  print("HI")
   r = Requests.post(restUrl,headers=headers, json=Dict(params))
   if Requests.statuscode(r)!=200
     error("Request to " * category * "/" * functionName * " failed with status code: " * string(Requests.statuscode(r))* "\n"*requesterrormessage(r))
