@@ -19,6 +19,7 @@ mutable struct ApiConfig
   user_agent::String
   key::String
   secret::String
+  ApiConfig() = new(EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY,EMPTY)
   ApiConfig(key,secret) = new(outputtype[:CSV],defaultresourcepath(),defaultsavefilepath(),defaultbaseurl(),defaultuseragent(),key,secret)
   ApiConfig(resource_path,key,secret) = new(outputtype[:CSV],resource_path,defaultsavepath(),defaultbaseurl(),defaultuseragent(),key,secret)
   ApiConfig(resource_path,savefile_path,key,secret) = new(outputtype[:CSV],resource_path,savefile_path,defaultbaseurl(),defaultuseragent(),key,secret)
@@ -57,11 +58,22 @@ function keypath()
 end
 
 const EMPTY           = ""
-credentials           = ApiConfig(EMPTY,EMPTY)
+credentials           = ApiConfig()
+credentials_init      = false
 const KEYFILE         = "API-Key.txt"
 const SECRETFILE      = "API-Secret.txt"
 const UTIL_SERVICE    = "Util"
 
+function __init_credentials!__(credentials_init)
+  if credentials_init == true
+    return
+  else
+    global credentials = ApiConfig(EMPTY,EMPTY)
+    credentials_init=true
+    _api_key!(credentials)
+    _api_secret!(credentials)
+  end
+end
 function _api_key!(c::ApiConfig)
   if length(c.key) == 0
     c.key = readCredentialFile(KEYFILE)
@@ -129,6 +141,7 @@ function url(category,functionName,output=credentials.default_outputtype)
 end
 
 function api_request(category, functionName; params...)
+  __init_credentials!__(credentials_init)
   restUrl  = url(category,functionName)
   headers = Dict("Authorization"=>"Basic $(base64encode(_api_key!(credentials)*":"*_api_secret!(credentials)))")
   r = Requests.post(restUrl,headers=headers, json=Dict(params))
