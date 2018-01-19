@@ -76,14 +76,22 @@ function __init_credentials!__(credentials_init)
 end
 function _api_key!(c::ApiConfig)
   if length(c.key) == 0
-    c.key = readCredentialFile(KEYFILE)
+    if haskey(ENV,"CHARM_API_KEY")
+      c.key = ENV["CHARM_API_KEY"]
+    else
+      c.key = readCredentialFile(KEYFILE)
+    end
   end
   return c.key
 end
 
 function _api_secret!(c::ApiConfig)
   if length(c.secret) == 0
-    c.secret = readCredentialFile(SECRETFILE)
+    if haskey(ENV,"CHARM_API_SECRET")
+      c.secret = ENV["CHARM_API_SECRET"]
+    else
+      c.secret = readCredentialFile(SECRETFILE)
+    end
   end
   return c.secret
 end
