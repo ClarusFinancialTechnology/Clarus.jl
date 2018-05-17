@@ -43,7 +43,7 @@ function defaultbaseurl()
   if haskey(ENV,"CHARM_API_URL")
     return ENV["CHARM_API_URL"]
   else
-    return "https://@eval.clarusft.com/api/rest/v1/"
+    return "@eval.clarusft.com/api/rest/v1/"
   end
 end
 
@@ -143,7 +143,7 @@ end
 
 function url(category,functionName,output=credentials.default_outputtype)
   # urlBase = "https://" * _api_key!(credentials) * ":" * _api_secret!(credentials) * credentials.baseurl
-  urlBase =  credentials.baseurl
+  urlBase = "https://" * credentials.baseurl
   restUrl  =  urlBase * category * "/" * functionName * "."*output
   return restUrl
 end
