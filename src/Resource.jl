@@ -3,7 +3,7 @@ using ..Clarus
 import CSV
 export read,write
 
-function openFile(filename; mode = "r")
+function openFile(filename, mode = "r")
   if isfile(filename)
     return open(filename,mode)
   end
@@ -14,6 +14,7 @@ function openFile(filename; mode = "r")
 end
 
 function read(filenames)
+  Clarus.Services.__init_credentials!__(Clarus.Services.credentials_init);
   return readfiles(filenames)
 end
 
