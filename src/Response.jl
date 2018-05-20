@@ -54,7 +54,7 @@ function read(r::Response,  sink::Type=DataFrame, ; dateformat::Dates.DateFormat
 end
 
 function Base.print(io::IO, r::Response)
-  return Base.print(dataframe!(r))
+  return Base.showall(dataframe!(r))
 end
 
 function dataframe!(r::Response)
