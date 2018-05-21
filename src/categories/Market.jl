@@ -1,6 +1,9 @@
 module Market
 
 import ..Clarus
+function caplets(;params...)
+  return Clarus.api_request("Market","Caplets";params...)
+end
 
 function curveusage(;params...)
   return Clarus.api_request("Market","CurveUsage";params...)
@@ -14,6 +17,10 @@ function fixings(;params...)
   return Clarus.api_request("Market","Fixings";params...)
 end
 
+function futures(;params...)
+  return Clarus.api_request("Market","Futures";params...)
+end
+
 function fxrates(;params...)
   return Clarus.api_request("Market","FXRates";params...)
 end
@@ -22,7 +29,7 @@ function pardv01(;params...)
   return Clarus.api_request("Market","ParDV01";params...)
 end
 
-function prarrates(;params...)
+function parrates(;params...)
   return Clarus.api_request("Market","ParRates";params...)
 end
 

@@ -2,6 +2,10 @@ module Margin
 
 import ..Clarus
 
+function attribution(;params...)
+  return Clarus.api_request("Margin","Attribution";params...)
+end
+
 function im(;params...)
   return Clarus.api_request("Margin","IM";params...)
 end
@@ -20,6 +24,10 @@ end
 
 function plvectors(;params...)
   return Clarus.api_request("Margin","PLVectors";params...)
+end
+
+function sensitivity(;params...)
+  return Clarus.api_request("Margin","Sensitivity";params...)
 end
 
 function vm(;params...)

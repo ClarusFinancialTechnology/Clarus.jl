@@ -2,6 +2,10 @@ module Util
 
 import ..Clarus
 
+function activity(;params...)
+  return Clarus.api_request("Util","Activity";params...)
+end
+
 function tickers(;params...)
   return Clarus.api_request("Util","Tickers";params...)
 end
@@ -17,10 +21,5 @@ end
 function domain(;params...)
   return Clarus.api_request("Util","Domain";params...)
 end
-
-function activity(;params...)
-  return Clarus.api_request("Util","Activity";params...)
-end
-
 
 end #MODULE-END

@@ -7,7 +7,7 @@ function ima(;params...)
 end
 
 function imaimpact(;params...)
-  return Clarus.api_request("FRTB","IMAImpace";params...)
+  return Clarus.api_request("FRTB","IMAImpact";params...)
 end
 
 function modellablerf(;params...)

@@ -10,6 +10,10 @@ function lasttrade(;params...)
   return Clarus.api_request("SDR","LastTrade";params...)
 end
 
+function tradefilter(;params...)
+  return Clarus.api_request("SDR","TradeFilter";params...)
+end
+
 function trades(;params...)
   return Clarus.api_request("SDR","Trades";params...)
 end

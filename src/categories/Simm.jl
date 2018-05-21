@@ -2,8 +2,8 @@ module Simm
 
 import ..Clarus
 
-function backtest(;params...)
-  return Clarus.api_request("SIMM","BackTest";params...)
+function history(;params...)
+  return Clarus.api_request("SIMM","History";params...)
 end
 
 function impact(;params...)
